@@ -24,9 +24,18 @@ def compute_Phi(x,p):
     '''
     #########################################
     ## INSERT YOUR CODE HERE
-
-
-
+    #Initiate a numpy array Phi
+    Phi = []
+    #number of features
+    #i = 0, 1, 2
+    for vector in x:
+        #initiate sample as an empty python list
+        sample = []
+        vector = vector.item(0)
+        for power in range(p):
+            sample.append(vector ** power)
+        Phi.append(sample)
+    Phi = np.mat(Phi)
     #########################################
     return Phi 
 
@@ -44,8 +53,7 @@ def compute_yhat(Phi, w):
     '''
     #########################################
     ## INSERT YOUR CODE HERE
-
-
+    yhat = Phi * w
     #########################################
 
     return yhat
@@ -62,9 +70,12 @@ def compute_L(yhat,y):
     '''
     #########################################
     ## INSERT YOUR CODE HERE
-
-
-
+    index = 0
+    squared_error = 0
+    for sample_yhat in yhat:
+        squared_error += (sample_yhat - y.item(index)) ** 2
+        index += 1
+    L = squared_error / (2 * index)
     #########################################
     return L 
 
@@ -84,9 +95,27 @@ def compute_dL_dw(y, yhat, Phi):
     '''
     #########################################
     ## INSERT YOUR CODE HERE
-
-
-
+    data_sample_size = Phi.shape[0]
+    feature_size = Phi.shape[1]
+    #compute each gradient with respect to wi
+    #each data sample of phi: 1, x
+    # for label_index in range(data_sample_size):
+    #     error_sum +=  yhat.item(label_index)- y.item(label_index)
+    dL_dw_w = 0
+    dL_dw = []
+    for feature_index in range(feature_size):
+        for sample_index in range(data_sample_size):
+            # yhat_sample_index=yhat.item(sample_index)
+            # y_sample_index=y.item(sample_index)
+            # Phi_sample_feature_index = Phi.item(sample_index, feature_index)
+            # error = yhat_sample_index - y_sample_index
+            # dL_dw_w += error * Phi_sample_feature_index
+            dL_dw_w += (yhat.item(sample_index) - y.item(sample_index)) * Phi.item(sample_index,feature_index)
+        dL_dw_w = dL_dw_w / data_sample_size
+        dL_dw.append(dL_dw_w)
+        #reset dL_dw_w to 0
+        dL_dw_w = 0
+    dL_dw = np.matrix(dL_dw).reshape(feature_size,1)
     #########################################
     return dL_dw
 
@@ -106,8 +135,7 @@ def update_w(w, dL_dw, alpha = 0.001):
     
     #########################################
     ## INSERT YOUR CODE HERE
-
-
+    w -= dL_dw * alpha
     #########################################
     return w
 
@@ -133,7 +161,6 @@ def train(X, Y, alpha=0.001, n_epoch=100):
 
     #########################################
     ## INSERT YOUR CODE HERE
-
     # Back propagation: compute local gradients 
         
 
