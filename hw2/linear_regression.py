@@ -53,7 +53,7 @@ def compute_yhat(Phi, w):
     '''
     #########################################
     ## INSERT YOUR CODE HERE
-    yhat = Phi * w
+    yhat = Phi.dot(w)
     #########################################
 
     return yhat
@@ -162,12 +162,10 @@ def train(X, Y, alpha=0.001, n_epoch=100):
     #########################################
     ## INSERT YOUR CODE HERE
     # Back propagation: compute local gradients 
-        
-
-        
-        
+        yhat = compute_yhat(X, w)
+        dL_dw = compute_dL_dw(Y, yhat, X)
     # update the parameters w
-        
+        w = update_w(w, dL_dw, alpha)
 
      #########################################
     return w
