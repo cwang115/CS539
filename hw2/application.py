@@ -22,12 +22,18 @@ Xtrain, Ytrain, Xtest, Ytest = X[::2], y[::2], X[1::2], y[1::2]
 
 #########################################
 ## INSERT YOUR CODE HERE
-
-
-
-
-
-
-
+#print(Xtrain, Ytrain)
+learning_rate = 0.05
+epochs = 1000
+print("Training results for linear regression")
+para_info = "Learning rate = {}, Number of epochs = {}".format(learning_rate,epochs)
+print(para_info)
+w = train(Xtrain, Ytrain, learning_rate, epochs)
+train_yhat = Xtrain.dot(w)
+test_yhat = Xtest.dot(w)
+train_loss = compute_L(train_yhat,Ytrain)
+test_loss = compute_L(test_yhat, Ytest)
+print("Final training loss:", train_loss.item(0))
+print("Test loss:", test_loss.item(0))
 #########################################
 

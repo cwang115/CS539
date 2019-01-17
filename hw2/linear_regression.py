@@ -24,18 +24,11 @@ def compute_Phi(x,p):
     '''
     #########################################
     ## INSERT YOUR CODE HERE
-    #Initiate a numpy array Phi
-    Phi = []
-    #number of features
-    #i = 0, 1, 2
-    for vector in x:
-        #initiate sample as an empty python list
-        sample = []
-        vector = vector.item(0)
-        for power in range(p):
-            sample.append(vector ** power)
-        Phi.append(sample)
-    Phi = np.mat(Phi)
+    #Initiate a numpy matrix with 0s of size (n by p)
+    Phi = np.matrix(np.zeros([x.shape[0], p]))
+    #generating the polynomials and put it into phi for each column
+    for i in range(p):
+        Phi[:, i] = np.power(x, i)
     #########################################
     return Phi 
 
@@ -161,7 +154,12 @@ def train(X, Y, alpha=0.001, n_epoch=100):
 
     #########################################
     ## INSERT YOUR CODE HERE
-    # Back propagation: compute local gradients 
+    # Back propagation: compute local gradients
+        if _ % 100 == 0:
+            yhat_report = compute_yhat(X, w)
+            loss_report = compute_L(yhat_report, Y)
+            loss_report = loss_report.item(0)
+            print("Training loss at ", _ ," epochs: ",loss_report)
         yhat = compute_yhat(X, w)
         dL_dw = compute_dL_dw(Y, yhat, X)
     # update the parameters w
